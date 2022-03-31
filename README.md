@@ -1,69 +1,51 @@
-# Desafio 02 (Iniciativa Kubernetes)
 
-Este desafio consiste em criar o processo de execução no Docker de uma aplicação simples construida em Node.Js que tem como foco converter uma temperatura de Celsius para Fahrenheit e vice e versa.
+## Instalação
 
-## Requisitos
+Passo 1 - Clone o projeto
 
-Ter o Node.Js e Docker instalado na sua máquina. Após isso, siga o passo a passo abaixo
+Passo 2 - Dentro da pasta /src onde está o arquivo Dockerfile rode os comandos
 
-1 - Clone ou baixe o repositório, abra a pasta src instale as dependencias e rode o projeto local para ter certeza que tudo está OK
 ```bash
-cd desafio_01_iniciativa_kubernetes
-cd src
-npm install
-node server.js
-```
-Feito o passo 1, é hora de começar a usar o Docker...
-
-## Comandos Docker
-2 - Dentro da pasta /src rode os comando abaixo:
-
-```python
-# comando irá gerar uma imagem do projeto seguindo o arquivo Dockerfile
-docker image build -t diego64/conversor-temperatura-desafio-01:v1 .
-
-# comando irá pegar a imagem criada acima e rodar em um container
-docker container run -d -p 8080:8080 seu_id/conversor-temperatura-desafio-01:v1
-```
-3 - Alguns comandos para consulta
-
-```python
-# comando irá listar as imagens criadas (Pode acrescentar -a no final)
+#lista as imagens criadas
 docker image ls
 
-# comando irá listar os container criados (Pode acrescentar -a no final)
- docker container ls
-```
+#gera a imagem da aplicação
+docker image build -t seu_id/conversor-temperatura-desafio-02:v1 .
 
-4 - Caso queira deletar uma imagem ou container
+#lista as imagens criadas
+docker image ls
 
-```python
-# comando irá deletar uma imagem criadas (Substituía os 000000 pelo ID da sua imagem)
-docker image rm 000000
+#gera a versão latest da versão 1 (Boa prática)
+docker tag seu_id/conversor-temperatura-desafio-02:v1 seu_id/conversor-temperatura-desafio-02:latest
 
-# comando irá deletar um container criado (Substituía os nome_do_seu_container pelo nome do seu container)
-docker container rm nome_do_seu_container
-```
-
-## Para subir a imagem criada para o Dokerhub
-```python
-# comando irá logar sua conta do dokerhub
+#faz login no dockerhub
 docker login
 
-# comando irá enviar a imagem para o repositório do docker
-docker push seu_id/nome_da_aplicacao:v1
+#envia a imagem para o dockerhub
+docker push seu_id/conversor-temperatura-desafio-02:v1
+
+#envia a imagem para o dockerhub
+docker push seu_id/conversor-temperatura-desafio-02:latest
+
+#lista os container em exeção
+docker container ls
 ```
 
-## Para baixar a imagem do projeto e rodar na sua maquina
-```python
-# comando irá logar sua conta do dokerhub
-docker login
+Passo 3 - Agora navege até a pasta k8s e dentro dela rode os seguintes comandos:
 
-# comando irá buscar no meu dockerhub
-docker container run -d -p 8080:8080 diego64/conversor-temperatura:v1
+```bash
+#cria os agentes de servidores do cluster com seus agentes e servidores para a redundância
+k3d cluster create cluster-conversor-temperatura --agents 2 --servers 2 -p "8080:30000@loadbalancer"
+
+#le o arquivo para executar as instruçoes
+kubectl apply -f deployment.yaml
+
+#lista os nós
+kubectl get pods
+
+#lista os serviços
+kubectl get services
 ```
 
-Please make sure to update tests as appropriate.
-
-## Créditos
-Fabrício Veronez - Instrutor da Iniciativa Kubernetes (https://iniciativakubernetes.com.br/)
+Passo 4 - Abrir o navegador e acessar o endereço localhost:8080
+    
