@@ -1,4 +1,21 @@
+# Desafio 02 da Iniciativa kubernetes
 
+
+O objetivo deste desafio é pegar a aplicação desenvolvida na segunda aula e colocar no kubernetes.
+
+Vou deixar os passos a passos dos comandos que rodei na minha máquina para conseguir entregar o desafio aprovado.
+
+
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [Doker](https://www.docker.com/)
+- [Doker Hub](https://hub.docker.com/)
+- [Kubernets](https://kubernetes.io/pt-br/)
+- [K3d](https://k3d.io/v5.4.1/)
+
+OBS: Eu utilizei uma distribuição Linux (Zorin OS) durante o desenvolvimento pois na minha opinião as tecnologias acima rodam com mais facilidade.
 ## Instalação
 
 Passo 1 - Clone o projeto
